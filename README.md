@@ -1,13 +1,11 @@
-# STM32G474 (CubeIDE) FW Template — Sensor→ADC(DMA)→FSM→MotorDriver, PC↔UART Command Parser, Protection, Dual PID, Motion/Encoder, Camera One-Pulse, Current Source
+# STM32G474 (CubeIDE) FW Template
 
-요청하신 추가 요구사항을 기존 아키텍처에 **모두 반영**했습니다.
-
-## 추가된 요구사항 반영
+## 내용 설명
 1) **Internal ADC 온도(TempSensor) 모니터링 → 일정값 이상 셧다운**
    - ADC DMA 시퀀스에 `TEMP` + `VREFINT` 포함(권장)
    - `service/temp_monitor.*`에서 온도 계산 및 Protection 연동
 
-2) **모터 2중 PID(캐스케이드)**
+2) **모터 2중 PID**
    - Outer(Position PID) → speed_setpoint
    - Inner(Speed PID) → current_setpoint
    - (추가) Current PI → PWM duty (전류제어 = current source)
@@ -24,7 +22,7 @@
    - ADC current sense → Current PI → PWM
    - Over-current/over-temp/timeout 등 Protection과 연동
 
-## 폴더 구조 (레이어 그대로 유지)
+## 폴더 구조
 - include/: 공통 헤더
 - src/driver/: STM32 HAL/LL 호출부(ADC DMA, UART, PWM, Encoder, OnePulse)
 - src/hal/: HAL Interface(추상화)
@@ -32,5 +30,5 @@
 - src/app/: FSM/Scheduler/PID(dual)/MotionProfile/Control
 - src/platform/: STM32G4 CubeIDE 연결 스켈레톤 + PC Sim
 
-## PC 테스트(명령 전송)
+## PC 테스트
 - `tools/pc_send_cmd.py` : 프레임(AA55/LEN/CMD/PAYLOAD/CRC16) 생성 및 (옵션) pyserial로 송신
